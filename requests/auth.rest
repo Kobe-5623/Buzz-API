@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Sign up
+# @name signup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "email": "ada@example.com",
+  "password": "Password123"
+}
+
+### Save these values after signup when your REST client does not support variables
+@token = {{signup.response.body.data.token}}
+@userId = {{signup.response.body.data.user.id}}
+
+### Log in
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ada@example.com",
+  "password": "Password123"
+}
+
+### Invalid login example
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ada@example.com",
+  "password": "wrong-password"
+}
