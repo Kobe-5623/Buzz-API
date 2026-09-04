@@ -6,9 +6,15 @@ POST {{baseUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "Ada Lovelace",
-  "email": "ada@example.com",
-  "password": "Password123"
+  "firstName": "Tuazon",
+  "middleName": "Dolorito",
+  "surname": "Kobe Bennedict",
+  "studentNumber": "24-1148",
+  "course": "BSCS",
+  "instiEmail": "tuazon.kobebennedict@collegeofmaryimmaculate.edu.ph",
+  "username": "biko",
+  "password": "bikolangs5623",
+  "confirmPassword": "bikolangs5623"
 }
 
 ### Save these values after signup when your REST client does not support variables
@@ -21,15 +27,26 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "ada@example.com",
-  "password": "Password123"
+  "username": "biko",
+  "password": "bikolangs5623"
 }
 
-### Invalid login example
-POST {{baseUrl}}/auth/login
+### Update username and password
+PATCH http://localhost:3000/api/v1/users/me
 Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
 
 {
-  "email": "ada@example.com",
-  "password": "wrong-password"
+  "username": "newusername",
+  "currentPassword": "anjanette03",
+  "password": "NewPassword123"
+}
+
+### Update username
+PATCH http://localhost:3000/api/v1/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0xUDdDS0hONURNSlcwTVNIVjZBUTlBMyIsImlhdCI6MTc4ODUyNzgzOSwiZXhwIjoxNzg4NTMxNDM5fQ.pgFWR9z9RLJoAByu_aUDtkkQ9KFC0N-J8mVZIMNNJ3U
+
+{
+  "username": "biko"
 }
