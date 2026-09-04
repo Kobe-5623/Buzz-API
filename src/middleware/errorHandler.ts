@@ -12,7 +12,7 @@ export const errorHandler: ErrorRequestHandler = (error: unknown, _request, resp
     return;
   }
   if (error instanceof UniqueConstraintError) {
-    response.status(409).json({ error: { code: 'INSTI_EMAIL_EXISTS', message: 'Institutional Email is already registered' } });
+    response.status(409).json({ error: { code: 'DUPLICATE_VALUE', message: 'A value already exists' } });
     return;
   }
   console.error(error);

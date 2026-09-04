@@ -22,6 +22,7 @@ async function ensureUnique(property: string, value: unknown, message: string, c
 export async function signup(input: SignupInput) {
   await ensureUnique('instiEmail', input.instiEmail,'Institutional Email is already registered', 'INSTI_EMAIL_EXISTS' )
   await ensureUnique('username', input.username,'Username is already registered', 'USERNAME_EXISTS' );
+  await ensureUnique('studentNumber', input.studentNumber, 'Student Number is already registered', 'STUDENT_NUMBER_EXISTS')
   const passwordHash = await bcrypt.hash(input.password, env.bcryptRounds);
   const user = await User.create(
     { 
