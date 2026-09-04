@@ -3,10 +3,26 @@ import { z } from 'zod';
 const password = z.string().min(8).max(72).regex(/[A-Za-z]/, 'Password must contain a letter').regex(/\d/, 'Password must contain a number');
 
 export const signupSchema = z.object({
-  name: z.string().trim().min(2).max(100),
-  email: z.string().trim().email().max(255).transform((value) => value.toLowerCase()),
+  firstName: z.string().trim().min(2).max(100),
+  middleName: z.string().trim().min(2).max(100).optional(),
+  surname: z.string().trim().min(2).max(100),
+  studentId: z.string().trim()
+        .regex(/^\d{2}-\d{4}$/),
+  course: z.enum(["BSCS", "BSBA", "BSA", "BSTM", "BSED"]),
+  email: z.string().trim().email().max(255)
+        .regex(/^[A-Za-z]+\.[A-Za-z]+@collegeofmaryimmaculate\.edu\.ph$/i,
+          'Email must follow the format surname.firstname@collegeofmaryimmaculate.edu.ph'
+        )
+        .transform((value) => value.toLowerCase()),
+  username: z.string().trim().min(2).max(20),
   password,
-}).strict();
+  confirmPassword: z.string().min(1),
+})
+.strict()
+.refine(data => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ["confirmPassword"],
+});
 
 export const loginSchema = z.object({
   email: z.string().trim().email().transform((value) => value.toLowerCase()),
@@ -14,11 +30,12 @@ export const loginSchema = z.object({
 }).strict();
 
 export const updateUserSchema = z.object({
-  name: z.string().trim().min(2).max(100).optional(),
-  email: z.string().trim().email().max(255).transform((value) => value.toLowerCase()).optional(),
-  password: password.optional(),
+  username: z.string().trim().min(2).max(20).optional(),
   currentPassword: z.string().min(1).optional(),
-}).strict().refine((data) => Object.keys(data).some((key) => key !== 'currentPassword'), {
+  password: password.optional(),
+  confirmPassword: z.string().min(1).optional(),
+}).strict().refine((data) => Object.keys(data)
+        .some((key) => key !== 'currentPassword' && key !== 'confirmPassword'), {
   message: 'At least one field must be updated',
 }).refine((data) => !data.password || Boolean(data.currentPassword), {
   message: 'currentPassword is required to change the password',
