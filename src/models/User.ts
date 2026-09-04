@@ -13,7 +13,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare id: CreationOptional<string>;
   declare username: string;
   declare passwordHash: string;
-  declare lastName: string;
+  declare surname: string;
   declare firstName: string;
   declare middleName: CreationOptional<string | null>;
   declare studentNumber: string;
@@ -28,7 +28,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     return {
       id: this.id,
       username: this.username,
-      lastName: this.lastName,
+      surname: this.surname,
       firstName: this.firstName,
       middleName: this.middleName,
       studentNumber: this.studentNumber,
@@ -44,7 +44,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 export interface SafeUser {
   id: string;
   username: string;
-  lastName: string;
+  surname: string;
   firstName: string;
   middleName: string | null;
   studentNumber: string;
@@ -58,21 +58,21 @@ export interface SafeUser {
 export function initUser(sequelize: Sequelize): typeof User {
   User.init(
     {
-      id: {type: DataTypes.STRING(26),primaryKey: true,defaultValue: generateID,},
-      username: {type: DataTypes.STRING(30),allowNull: false,unique: true,},
-      passwordHash: {type: DataTypes.STRING(255),allowNull: false,field: 'password_hash',},
-      lastName: {type: DataTypes.STRING(20),allowNull: false,field: 'last_name',},
-      firstName: {type: DataTypes.STRING(50),allowNull: false,field: 'first_name',},
-      middleName: {type: DataTypes.STRING(20),allowNull: true,field: 'middle_name',},
-      studentNumber: {type: DataTypes.STRING(7),allowNull: false,unique: true,field: 'student_number',},
-      instiEmail: {type: DataTypes.STRING(100),allowNull: false,unique: true,field: 'insti_email',},
-      course: {type: DataTypes.ENUM(...COURSES),allowNull: false,},
-      profileImage: {type: DataTypes.STRING(255),allowNull: true,field: 'profile_image',},
-      deletedAt: {type: DataTypes.DATE,allowNull: true,defaultValue: null,field: 'deleted_at',},
-      createdAt: {type: DataTypes.DATE,allowNull: false,field: 'created_at',},
-      updatedAt: {type: DataTypes.DATE,allowNull: false,field: 'updated_at',},
+      id: {type: DataTypes.STRING(26), primaryKey: true, defaultValue: generateID},
+      username: {type: DataTypes.STRING(20), allowNull: false,unique: true},
+      passwordHash: {type: DataTypes.STRING(72), allowNull: false, field: 'password_hash'},
+      surname: {type: DataTypes.STRING(100), allowNull: false, field: 'surname'},
+      firstName: {type: DataTypes.STRING(100), allowNull: false, field: 'first_name'},
+      middleName: {type: DataTypes.STRING(100), allowNull: true, field: 'middle_name'},
+      studentNumber: {type: DataTypes.STRING(7), allowNull: false, unique: true, field: 'student_number'},
+      instiEmail: {type: DataTypes.STRING(255), allowNull: false, unique: true, field: 'insti_email'},
+      course: {type: DataTypes.ENUM(...COURSES), allowNull: false},
+      profileImage: {type: DataTypes.STRING(255), allowNull: true, field: 'profile_image'},
+      deletedAt: {type: DataTypes.DATE, allowNull: true, defaultValue: null, field: 'deleted_at'},
+      createdAt: {type: DataTypes.DATE, allowNull: false, field: 'created_at'},
+      updatedAt: {type: DataTypes.DATE, allowNull: false, field: 'updated_at'},
     },
-    {sequelize,tableName: 'users',modelName: 'User',underscored: true,},
+    {sequelize, tableName: 'users', modelName: 'User', underscored: true},
   );
   return User;
 }
