@@ -5,5 +5,5 @@ import { validateBody } from '../middleware/validate.js';
 import { updateUserSchema } from '../validators/user.validators.js';
 
 export const userRouter = Router();
-userRouter.patch('/:id', authenticate, validateBody(updateUserSchema), controller.update);
-userRouter.patch('/:id/deactivate', authenticate, controller.deactivate);
+userRouter.patch('/me', authenticate, validateBody(updateUserSchema), controller.update);
+userRouter.patch('/me/deactivate', authenticate, controller.deactivate);
