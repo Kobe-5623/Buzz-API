@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+const username = z.string().min(3).max(20).regex(/^[A-Za-z0-9_.-]$/, 'Username may only contain letters, numbers, underscores, periods, and dashes').regex(/[A-Za-z]/, 'Username must contain a letter');
 const password = z.string().min(8).max(72).regex(/[A-Za-z]/, 'Password must contain a letter').regex(/\d/, 'Password must contain a number');
 
 export const signupSchema = z.object({
@@ -8,13 +9,13 @@ export const signupSchema = z.object({
   surname: z.string().trim().min(2).max(100),
   studentId: z.string().trim()
         .regex(/^\d{2}-\d{4}$/),
-  course: z.enum(["BSCS", "BSBA", "BSA", "BSTM", "BSED"]),
+  course: z.enum(["BSCS", "BSBA", "BSA", "BSTM", "BSHM", "BSED"]),
   email: z.string().trim().email().max(255)
         .regex(/^[A-Za-z]+\.[A-Za-z]+@collegeofmaryimmaculate\.edu\.ph$/i,
           'Email must follow the format surname.firstname@collegeofmaryimmaculate.edu.ph'
         )
         .transform((value) => value.toLowerCase()),
-  username: z.string().trim().min(2).max(20),
+  username,
   password,
   confirmPassword: z.string().min(1),
 })
@@ -30,7 +31,7 @@ export const loginSchema = z.object({
 }).strict();
 
 export const updateUserSchema = z.object({
-  username: z.string().trim().min(2).max(20).optional(),
+  username: username.optional(),
   currentPassword: z.string().min(1).optional(),
   password: password.optional(),
   confirmPassword: z.string().min(1).optional(),
