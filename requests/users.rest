@@ -1,35 +1,29 @@
 @baseUrl = http://localhost:3000/api/v1
-@userId = 1
-@token = paste-a-token-from-signup-or-login-here
 
-### Update name and email
-PATCH {{baseUrl}}/users/{{userId}}
-Authorization: Bearer {{token}}
+### Update username and password
+PATCH {{baseUrl}}/users/me
 Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
 
 {
-  "name": "Ada Byron",
-  "email": "ada.byron@example.com"
+  "username": "newusername",
+  "currentPassword": "anjanette03",
+  "password": "NewPassword123"
 }
 
-### Change password (current password is required)
-PATCH {{baseUrl}}/users/{{userId}}
-Authorization: Bearer {{token}}
+### Update username
+PATCH {{baseUrl}}/users/me
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0xUDdDS0hONURNSlcwTVNIVjZBUTlBMyIsImlhdCI6MTc4OTAzNzM0OSwiZXhwIjoxNzg5MDQwOTQ5fQ.mchxJL-A3Hrqaq8zSZ7cgKJFczaGMmZR1kVFDSqF5us
 
 {
-  "password": "NewPassword456",
-  "currentPassword": "Password123"
+  "username": "biko"
 }
 
-### Deactivate account
-PATCH {{baseUrl}}/users/{{userId}}/deactivate
-Authorization: Bearer {{token}}
 
-### Unauthorized update example
-PATCH {{baseUrl}}/users/{{userId}}
+### Delete user soft
+DELETE {{baseUrl}}/users/me/soft-delete
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0yN1Y3UzNYSDhQS0tSTkFGSDdXUjVaRiIsImlhdCI6MTc4OTExODIwOSwiZXhwIjoxNzg5MTIxODA5fQ.3U6qXuLxrgyuIws2PNwE5HflfT_I0OIfNVkgxGmuxT0
 
-{
-  "name": "This request has no bearer token"
-}
+

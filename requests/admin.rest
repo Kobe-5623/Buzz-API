@@ -1,0 +1,12 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Delete user forced
+DELETE {{baseUrl}}/admin/users/01M27V7S3XH8PKKRNAFH7WR5ZF/force-delete
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0yN1ZKR0JSSEZIVFc5TVZQS0o0RUVXQiIsImlhdCI6MTc4OTExNzY3OCwiZXhwIjoxNzg5MTIxMjc4fQ.AX_DWdrAjc56dZZXhfp-4pxtJhwA1ZXRLQgI8rHocUY
+
+
+### Restore deleted user
+PATCH {{baseUrl}}/admin/users/01M27V7S3XH8PKKRNAFH7WR5ZF/restore
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0yN1ZKR0JSSEZIVFc5TVZQS0o0RUVXQiIsImlhdCI6MTc4OTExNzY3OCwiZXhwIjoxNzg5MTIxMjc4fQ.AX_DWdrAjc56dZZXhfp-4pxtJhwA1ZXRLQgI8rHocUY

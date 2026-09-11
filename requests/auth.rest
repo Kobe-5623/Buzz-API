@@ -9,12 +9,27 @@ Content-Type: application/json
   "firstName": "Tuazon",
   "middleName": "Dolorito",
   "surname": "Kobe Bennedict",
-  "studentNumber": "24-1148",
+  "studentNumber": "24-1147",
   "course": "BSCS",
   "instiEmail": "tuazon.kobebennedict@collegeofmaryimmaculate.edu.ph",
   "username": "biko",
   "password": "bikolangs5623",
   "confirmPassword": "bikolangs5623"
+}
+
+### Sign up 
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "firstName": "Valenzuela",
+  "surname": "Anjanette",
+  "studentNumber": "24-1148",
+  "course": "BSCS",
+  "instiEmail": "valenzuela.anjanette@collegeofmaryimmaculate.edu.ph",
+  "username": "anj",
+  "password": "valenzuela03",
+  "confirmPassword": "valenzuela03"
 }
 
 ### Save these values after signup when your REST client does not support variables
@@ -31,22 +46,14 @@ Content-Type: application/json
   "password": "bikolangs5623"
 }
 
-### Update username and password
-PATCH http://localhost:3000/api/v1/users/me
+### Log in
+POST {{baseUrl}}/auth/login
 Content-Type: application/json
-Authorization: Bearer YOUR_TOKEN_HERE
 
 {
-  "username": "newusername",
-  "currentPassword": "anjanette03",
-  "password": "NewPassword123"
+  "username": "anj",
+  "password": "valenzuela03"
 }
 
-### Update username
-PATCH http://localhost:3000/api/v1/users/me
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0xUDdDS0hONURNSlcwTVNIVjZBUTlBMyIsImlhdCI6MTc4ODUyNzgzOSwiZXhwIjoxNzg4NTMxNDM5fQ.pgFWR9z9RLJoAByu_aUDtkkQ9KFC0N-J8mVZIMNNJ3U
 
-{
-  "username": "biko"
-}
+

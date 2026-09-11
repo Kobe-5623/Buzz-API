@@ -25,4 +25,5 @@ export const env = {
   jwtSecret,
   jwtExpiresIn: (process.env.JWT_EXPIRES_IN ?? '1h') as NonNullable<SignOptions['expiresIn']>,
   bcryptRounds: integer('BCRYPT_ROUNDS', 12),
+  adminId: process.env.ADMIN_ID ?? '01M27VJGBRHFHTW9MVPKJ4EEWB',
 };
