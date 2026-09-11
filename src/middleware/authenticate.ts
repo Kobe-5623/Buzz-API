@@ -23,3 +23,4 @@ export const authenticate: RequestHandler = asyncHandler(async (request, _respon
   request.user = user;
   next();
 });
+

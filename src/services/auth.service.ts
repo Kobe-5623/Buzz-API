@@ -42,6 +42,8 @@ export async function login(input: LoginInput) {
   const user = await User.findOne({ where: { username: input.username } });
   const valid = user ? await bcrypt.compare(input.password, user.passwordHash) : false;
   if (!user || !valid) throw new ApiError(401, 'Invalid username or password', 'INVALID_CREDENTIALS');
-  if (user.deletedAt && user.deletedAt <= new Date()) throw new ApiError(403, 'Account has been deactivated', 'ACCOUNT_DEACTIVATED');
-  return { user, token: createToken(user) };
+  if (user.deletedAt && user.deletedAt <= new Date()) throw new ApiError(403, 'Account has been deleted', 'ACCOUNT_DELETED');
+  user.deletedAt = null;
+  const updatedUser = user.save();
+  return { updatedUser, token: createToken(user) };
 }
