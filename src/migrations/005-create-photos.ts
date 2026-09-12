@@ -8,7 +8,6 @@ export async function up({ context }: MigrationContext): Promise<void> {
     id: {type: DataTypes.STRING(26), primaryKey: true},
     post_id: {type: DataTypes.STRING(26),allowNull: false,references: { model: 'posts', key: 'id' }},
     url: {type: DataTypes.STRING(255), allowNull: false},
-    order: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
     created_at: {type: DataTypes.DATE, allowNull: false},
   });
 }
