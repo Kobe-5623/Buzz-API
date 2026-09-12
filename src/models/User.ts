@@ -61,7 +61,7 @@ export function initUser(sequelize: Sequelize): typeof User {
       id: {type: DataTypes.STRING(26), primaryKey: true, defaultValue: generateID},
       username: {type: DataTypes.STRING(20), allowNull: false,unique: true},
       passwordHash: {type: DataTypes.STRING(72), allowNull: false, field: 'password_hash'},
-      surname: {type: DataTypes.STRING(100), allowNull: false, field: 'surname'},
+      surname: {type: DataTypes.STRING(100), allowNull: false },
       firstName: {type: DataTypes.STRING(100), allowNull: false, field: 'first_name'},
       middleName: {type: DataTypes.STRING(100), allowNull: true, field: 'middle_name'},
       studentNumber: {type: DataTypes.STRING(7), allowNull: false, unique: true, field: 'student_number'},
