@@ -1,30 +1,5 @@
 import { sequelize } from '../config/database.js';
-import { initBlock } from './Block.js';
-import { initComment } from './Comment.js';
-import { initCommentLike } from './CommentLike.js';
-import { initFollow } from './Follow.js';
-import { initHiddenPost } from './HiddenPost.js';
-import { initPhoto } from './Photo.js';
-import { initPost } from './Post.js';
-import { initPostLike } from './PostLike.js';
-import { initReply } from './Reply.js';
-import { initReplyLike } from './ReplyLike.js';
-import { initRepost } from './Repost.js';
-import { initSavedPost } from './SavedPost.js';
 import { initUser } from './User.js';
 
 export const User = initUser(sequelize);
-export const Post = initPost(sequelize);
-export const Comment = initComment(sequelize);
-export const Reply = initReply(sequelize);
-export const Photo = initPhoto(sequelize);
-export const HiddenPost = initHiddenPost(sequelize);
-export const Repost = initRepost(sequelize);
-export const Follow = initFollow(sequelize);
-export const Block = initBlock(sequelize);
-export const PostLike = initPostLike(sequelize);
-export const CommentLike = initCommentLike(sequelize);
-export const ReplyLike = initReplyLike(sequelize);
-export const SavedPost = initSavedPost(sequelize);
-
 export { sequelize };
