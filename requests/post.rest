@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Create post
+
+POST {{baseUrl}}/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMU0yN1Y3UzNYSDhQS0tSTkFGSDdXUjVaRiIsImlhdCI6MTc4OTIwNzUzNywiZXhwIjoxNzg5MjExMTM3fQ.Ln2m4cqSePY0F4qWMeluiPY2cPm7cjLfIlqWO3Zl_fA
+Content-Type: multipart/form-data; boundary=BuzzBoundary
+
+--BuzzBoundary
+Content-Disposition: form-data; name="caption"
+
+My first Buzz post
+--BuzzBoundary
+Content-Disposition: form-data; name="images"; filename="image1.test.jpg"
+Content-Type: image/jpeg
+
+< ./.test-images/image1.test.jpg
+--BuzzBoundary
+Content-Disposition: form-data; name="images"; filename="image2.test.jpg"
+Content-Type: image/jpeg
+
+< ./.test-images/image2.test.jpg
+--BuzzBoundary
+Content-Disposition: form-data; name="images"; filename="image3.test.jpg"
+Content-Type: image/jpeg
+
+< ./.test-images/image3.test.jpg
+--BuzzBoundary--
