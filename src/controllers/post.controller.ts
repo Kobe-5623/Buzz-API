@@ -13,12 +13,12 @@ export const createPost: RequestHandler = asyncHandler(async (request, response)
 
 export const likePost: RequestHandler = asyncHandler(async (request, response) => {
   const userId = assertAuth(request.user).id;
-  await postService.likePost(request.params.postId, userId);
+  await postService.likePost(request.params.postId as string, userId);
   response.json({ data: { message: 'Post liked' } });
 });
 
 export const unlikePost: RequestHandler = asyncHandler(async (request, response) => {
   const userId = assertAuth(request.user).id;
-  await postService.unlikePost(request.params.postId, userId);
+  await postService.unlikePost(request.params.postId as string, userId);
   response.status(204).send();
 });
