@@ -11,3 +11,14 @@ export const createPost: RequestHandler = asyncHandler(async (request, response)
   response.json({ data: { post: newPost } });
 });
 
+export const likePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.likePost(request.params.postId, userId);
+  response.json({ data: { message: 'Post liked' } });
+});
+
+export const unlikePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.unlikePost(request.params.postId, userId);
+  response.status(204).send();
+});
