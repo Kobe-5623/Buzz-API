@@ -1,12 +1,13 @@
 import bcrypt from 'bcryptjs';
-import jwt, { type SignOptions } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import type { User } from '../models/User.js';
-import { User as UserModel } from '../models/index.js';
+import { Admin as AdminModel, User as UserModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import type { LoginInput, SignupInput } from '../validators/user.validators.js';
+import type { Admin } from '../models/Admin.js';
 
-function createToken(user: User): string {
+function createToken(user: User|Admin): string {
   return jwt.sign(
     { sub: String(user.id) },
     env.jwtSecret,
@@ -39,11 +40,12 @@ export async function signup(input: SignupInput) {
 }
 
 export async function login(input: LoginInput) {
-  const user = await UserModel.findOne({ where: { username: input.username } });
+  let user: User|Admin|null = await UserModel.findOne({ where: { username: input.username } });
+  if (!user) user = await AdminModel.findOne({ where: { username: input.username } });
   const valid = user ? await bcrypt.compare(input.password, user.passwordHash) : false;
   if (!user || !valid) throw new ApiError(401, 'Invalid username or password', 'INVALID_CREDENTIALS');
   if (user.deletedAt && user.deletedAt <= new Date()) throw new ApiError(403, 'Account has been deleted', 'ACCOUNT_DELETED');
   user.deletedAt = null;
-  const updatedUser = user.save();
+  const updatedUser = await user.save();
   return { updatedUser, token: createToken(user) };
 }

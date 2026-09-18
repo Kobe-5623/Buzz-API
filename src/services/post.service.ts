@@ -1,5 +1,5 @@
 import { uploadImage } from "./cloudinary.service.js";
-import { Post as PostModel, PostLike as PostLikeModel, Repost as RepostModel,HiddenPost as HiddenPostModel,SavedPost as SavedPostMode, sequelize } from "../models/index.js";
+import { Post as PostModel, PostLike as PostLikeModel, Repost as RepostModel,HiddenPost as HiddenPostModel,SavedPost as SavedPostModel, sequelize } from "../models/index.js";
 import { Photo as PhotoModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import { Categories } from "../constants/post.js";
