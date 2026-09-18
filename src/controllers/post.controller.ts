@@ -34,3 +34,28 @@ export const unrepost: RequestHandler = asyncHandler(async (request, response) =
   await postService.unrepost(request.params.postId as string, userId);
   response.status(204).send();
 });
+
+export const savePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.savePost(request.params.postId as string, userId);
+  response.json({ data: { message: 'Post saved' } });
+});
+
+export const unsavePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.unsavePost(request.params.postId as string, userId);
+  response.status(204).send();
+});
+
+export const hidePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.hidePost(request.params.postId as string, userId);
+  response.json({ data: { message: 'Post hidden' } });
+});
+
+export const unhidePost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.unhidePost(request.params.postId as string, userId);
+  response.status(204).send();
+});
+
