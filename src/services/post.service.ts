@@ -1,5 +1,5 @@
 import { uploadImage } from "./cloudinary.service.js";
-import { Post as PostModel, PostLike as PostLikeModel, Repost as RepostModel, sequelize } from "../models/index.js";
+import { Post as PostModel, PostLike as PostLikeModel, Repost as RepostModel,HiddenPost as HiddenPostModel,SavedPost as SavedPostMode, sequelize } from "../models/index.js";
 import { Photo as PhotoModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import { Categories } from "../constants/post.js";
@@ -59,3 +59,38 @@ export async function unrepost(postId: string, userId: string) { await sequelize
   await repost.destroy();
   await PostModel.increment({ repostsCount: -1 }, { where: { id: postId } });
 })}
+
+export async function savePost(postId: string, userId: string) {
+  const post = await PostModel.findOne({ where: { id: postId, deletedAt: null } });
+  if (!post) throw new ApiError(404, 'Post not found', 'NOT_FOUND');
+
+  const existing = await SavedPostModel.findOne({ where: { postId, userId } });
+  if (existing) throw new ApiError(409, 'Post already saved', 'ALREADY_SAVED');
+
+  await SavedPostModel.create({ postId, userId });
+}
+
+export async function unsavePost(postId: string, userId: string) {
+  const saved = await SavedPostModel.findOne({ where: { postId, userId } });
+  if (!saved) throw new ApiError(404, 'Saved post not found', 'SAVED_POST_NOT_FOUND');
+
+  await saved.destroy();
+}
+
+export async function hidePost(postId: string, userId: string) {
+  const post = await PostModel.findOne({ where: { id: postId, deletedAt: null } });
+  if (!post) throw new ApiError(404, 'Post not found', 'NOT_FOUND');
+
+  const existing = await HiddenPostModel.findOne({ where: { postId, userId } });
+  if (existing) throw new ApiError(409, 'Post already hidden', 'ALREADY_HIDDEN');
+
+  await HiddenPostModel.create({ postId, userId });
+}
+
+export async function unhidePost(postId: string, userId: string) {
+  const hidden = await HiddenPostModel.findOne({ where: { postId, userId } });
+  if (!hidden) throw new ApiError(404, 'Hidden post not found', 'HIDDEN_POST_NOT_FOUND');
+
+  await hidden.destroy();
+}
+
