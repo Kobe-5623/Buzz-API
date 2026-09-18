@@ -1,5 +1,5 @@
 import { uploadImage } from "./cloudinary.service.js";
-import { Post as PostModel, PostLike as PostLikeModel } from "../models/index.js";
+import { Post as PostModel, PostLike as PostLikeModel, sequelize } from "../models/index.js";
 import { Photo as PhotoModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 
@@ -20,7 +20,7 @@ export async function createPost(userId: string, images: Express.Multer.File[], 
   return post;
 }
 
-export async function likePost(postId: string, userId: string) {
+export async function likePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
   const post = await PostModel.findOne({ where: { id: postId, deletedAt: null } });
   if (!post) throw new ApiError(404, 'Post not found', 'NOT_FOUND');
 
@@ -29,12 +29,12 @@ export async function likePost(postId: string, userId: string) {
 
   await PostLikeModel.create({ postId, userId });
   await post.increment('likesCount');
-}
+})}
 
-export async function unlikePost(postId: string, userId: string) {
+export async function unlikePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
   const like = await PostLikeModel.findOne({ where: { postId, userId } });
   if (!like) throw new ApiError(404, 'Like not found', 'NOT_FOUND');
 
   await like.destroy();
   await PostModel.increment({ likesCount: -1 }, { where: { id: postId } });
-}
+})}
