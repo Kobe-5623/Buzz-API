@@ -22,3 +22,15 @@ export const unlikePost: RequestHandler = asyncHandler(async (request, response)
   await postService.unlikePost(request.params.postId as string, userId);
   response.status(204).send();
 });
+
+export const repost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.repost(request.params.postId as string, userId);
+  response.json({ data: { message: 'Post reposted' } });
+});
+
+export const unrepost: RequestHandler = asyncHandler(async (request, response) => {
+  const userId = assertAuth(request.user).id;
+  await postService.unrepost(request.params.postId as string, userId);
+  response.status(204).send();
+});
