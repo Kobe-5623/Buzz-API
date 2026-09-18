@@ -1,9 +1,10 @@
 export const CATEGORIES = [
   'general',
   'news',
-  'feedback'
+  'feedback',
   'idea',
   'opinion',
+  'question',
 ] as const;
 
 export type Categories = typeof CATEGORIES[number];

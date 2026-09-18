@@ -2,10 +2,12 @@ import { uploadImage } from "./cloudinary.service.js";
 import { Post as PostModel, PostLike as PostLikeModel, Repost as RepostModel, sequelize } from "../models/index.js";
 import { Photo as PhotoModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
+import { Categories } from "../constants/post.js";
 
-export async function createPost(userId: string, images: Express.Multer.File[], caption?: string) {
+export async function createPost(userId: string, images: Express.Multer.File[], category: Categories, caption?: string) {
   const post = await PostModel.create({
     userId,
+    category,
     caption,
   });
 
@@ -47,13 +49,13 @@ export async function repost(postId: string, userId: string) { await sequelize.t
   if (existing) throw new ApiError(409, 'Post already reposted', 'ALREADY_REPOSTED');
 
   await RepostModel.create({ postId, userId });
-  await post.increment('repostCount');
+  await post.increment('repostsCount');
 })}
 
 export async function unrepost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
   const repost = await RepostModel.findOne({ where: { postId, userId } });
   if (!repost) throw new ApiError(404, 'Repost not found', 'REPOST_NOT_FOUND');
 
-  await like.destroy();
-  await PostModel.increment({ repostCount: -1 }, { where: { id: postId } });
+  await repost.destroy();
+  await PostModel.increment({ repostsCount: -1 }, { where: { id: postId } });
 })}
