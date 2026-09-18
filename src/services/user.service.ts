@@ -27,3 +27,23 @@ export async function softDeleteUser(user: User): Promise<User> {
   return user.save();
 }
 
+export async function blockUser(blockerId: string, blockedId: string): Promise<void> {
+  if (blockerId === blockedId) {
+    throw new ApiError(400, 'You cannot block yourself', 'CANNOT_BLOCK_SELF');
+  }
+
+  const targetUser = await UserModel.findOne({ where: { id: blockedId, deletedAt: null } });
+  if (!targetUser) throw new ApiError(404, 'User not found', 'NOT_FOUND');
+
+  const existing = await BlockModel.findOne({ where: { blockerId, blockedId } });
+  if (existing) throw new ApiError(409, 'User already blocked', 'ALREADY_BLOCKED');
+
+  await BlockModel.create({ blockerId, blockedId });
+}
+
+export async function unblockUser(blockerId: string, blockedId: string): Promise<void> {
+  const block = await BlockModel.findOne({ where: { blockerId, blockedId } });
+  if (!block) throw new ApiError(404, 'Block not found', 'NOT_FOUND');
+
+  await block.destroy();
+}
