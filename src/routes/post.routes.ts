@@ -7,3 +7,6 @@ export const postRouter = Router();
 postRouter.post('/', authenticate, upload.array('images'), controller.createPost);
 postRouter.post('/:postId/like', authenticate, controller.likePost);
 postRouter.delete('/:postId/like', authenticate, controller.unlikePost);
+postRouter.post('/:postId/repost', authenticate, controller.repost);
+postRouter.delete('/:postId/repost', authenticate, controller.unrepost);
+
