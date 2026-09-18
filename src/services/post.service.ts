@@ -58,7 +58,7 @@ export async function unrepost(postId: string, userId: string) { await sequelize
   await PostModel.increment({ repostCount: -1 }, { where: { id: postId } });
 })}
 
-export async function savePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
+export async function savePost(postId: string, userId: string) {
   const post = await PostModel.findOne({ where: { id: postId, deletedAt: null } });
   if (!post) throw new ApiError(404, 'Post not found', 'NOT_FOUND');
 
@@ -66,16 +66,16 @@ export async function savePost(postId: string, userId: string) { await sequelize
   if (existing) throw new ApiError(409, 'Post already saved', 'ALREADY_SAVED');
 
   await SavedPostModel.create({ postId, userId });
-})}
+}
 
-export async function unsavePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
+export async function unsavePost(postId: string, userId: string) {
   const saved = await SavedPostModel.findOne({ where: { postId, userId } });
   if (!saved) throw new ApiError(404, 'Saved post not found', 'SAVED_POST_NOT_FOUND');
 
   await saved.destroy();
-})}
+}
 
-export async function hidePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
+export async function hidePost(postId: string, userId: string) {
   const post = await PostModel.findOne({ where: { id: postId, deletedAt: null } });
   if (!post) throw new ApiError(404, 'Post not found', 'NOT_FOUND');
 
@@ -83,12 +83,12 @@ export async function hidePost(postId: string, userId: string) { await sequelize
   if (existing) throw new ApiError(409, 'Post already hidden', 'ALREADY_HIDDEN');
 
   await HiddenPostModel.create({ postId, userId });
-})}
+}
 
-export async function unhidePost(postId: string, userId: string) { await sequelize.transaction(async (transaction) => {
+export async function unhidePost(postId: string, userId: string) {
   const hidden = await HiddenPostModel.findOne({ where: { postId, userId } });
   if (!hidden) throw new ApiError(404, 'Hidden post not found', 'HIDDEN_POST_NOT_FOUND');
 
   await hidden.destroy();
-})}
+}
 
