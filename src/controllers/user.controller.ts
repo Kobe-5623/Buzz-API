@@ -15,3 +15,15 @@ export const softDelete: RequestHandler = asyncHandler(async (request, response)
   await userService.softDeleteUser(user);
   response.status(204).send();
 });
+
+export const blockUser: RequestHandler = asyncHandler(async (request, response) => {
+  const blocker = assertAuth(request.user);
+  await userService.blockUser(blocker, request.params.userId as string);
+  response.json({ data: { message: 'User blocked' } });
+});
+
+export const unblockUser: RequestHandler = asyncHandler(async (request, response) => {
+  const blocker = assertAuth(request.user);
+  await userService.unblockUser(blocker, request.params.userId as string);
+  response.status(204).send();
+});
