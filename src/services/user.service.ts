@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { env } from '../config/env.js';
 import type { User } from '../models/User.js';
-import { User as UserModel } from '../models/index.js';
+import { User as UserModel, Block as BlockModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import type { UpdateUserInput } from '../validators/user.validators.js';
 
