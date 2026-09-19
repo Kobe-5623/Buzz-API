@@ -1,4 +1,5 @@
 import { sequelize } from '../config/database.js';
+import { initAdmin } from './Admin.js';
 import { initBlock } from './Block.js';
 import { initComment } from './Comment.js';
 import { initCommentLike } from './CommentLike.js';
@@ -26,5 +27,6 @@ export const PostLike = initPostLike(sequelize);
 export const CommentLike = initCommentLike(sequelize);
 export const ReplyLike = initReplyLike(sequelize);
 export const SavedPost = initSavedPost(sequelize);
+export const Admin = initAdmin(sequelize);
 
 export { sequelize };
