@@ -7,7 +7,7 @@ export async function up({ context }: MigrationContext): Promise<void> {
   await context.createTable('posts', {
     id: { type: DataTypes.STRING(26), primaryKey: true },
     user_id: {type: DataTypes.STRING(26),allowNull: false,references: { model: 'users', key: 'id' },},
-    category: { type: DataTypes.ENUM('general', 'news', 'feedback', 'idea', 'opinion'), allowNull: false, defaultValue: 'general' },
+    category: { type: DataTypes.ENUM('general', 'news', 'feedback', 'idea', 'opinion','question'), allowNull: false, defaultValue: 'general' },
     caption: { type: DataTypes.STRING(500), allowNull: true },
     likes_count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
     comments_count: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
