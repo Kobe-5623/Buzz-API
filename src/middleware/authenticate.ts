@@ -1,9 +1,11 @@
 import type { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
-import { User } from '../models/index.js';
+import { User as UserModel, Admin as AdminModel } from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { User } from '../models/User.js';
+import { Admin } from '../models/Admin.js';
 
 interface TokenPayload extends jwt.JwtPayload { sub: string }
 
@@ -18,7 +20,8 @@ export const authenticate: RequestHandler = asyncHandler(async (request, _respon
     throw new ApiError(401, 'Invalid or expired token', 'INVALID_TOKEN');
   }
 
-  const user = await User.findByPk(payload.sub);
+  let user: User|Admin|null = await UserModel.findByPk(payload.sub);
+  if (!user) user = await AdminModel.findByPk(payload.sub);
   if (!user || (user.deletedAt && user.deletedAt <= new Date())) throw new ApiError(401, 'Account is unavailable', 'ACCOUNT_UNAVAILABLE');
   request.user = user;
   next();
