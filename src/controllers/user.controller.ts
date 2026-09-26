@@ -27,3 +27,9 @@ export const unblockUser: RequestHandler = asyncHandler(async (request, response
   await userService.unblockUser(blockerId, request.params.userId as string);
   response.status(204).send();
 });
+
+export const getUserProfile: RequestHandler = asyncHandler(async (request, response) => {
+  const requestingUserId = assertAuth(request.user).id;
+  const profile = await userService.getUserProfile(request.params.userId as string, requestingUserId);
+  response.json({ data: profile });
+});
