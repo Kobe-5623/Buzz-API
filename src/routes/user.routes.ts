@@ -7,3 +7,4 @@ userRouter.patch('/me', authenticate, controller.update);
 userRouter.delete('/me/soft-delete', authenticate, controller.softDelete);
 userRouter.post('/:userId/block', authenticate, controller.blockUser);
 userRouter.delete('/:userId/block', authenticate, controller.unblockUser);
+userRouter.get('/:userId', authenticate, controller.getUserProfile);
