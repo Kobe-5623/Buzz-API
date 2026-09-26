@@ -1,7 +1,13 @@
 import bcrypt from 'bcryptjs';
 import { env } from '../config/env.js';
 import type { User } from '../models/User.js';
-import { User as UserModel, Block as BlockModel } from '../models/index.js';
+import {
+  User as UserModel,
+  Block as BlockModel,
+  Post as PostModel,
+  Follow as FollowModel,
+  Repost as RepostModel,
+} from '../models/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import type { UpdateUserInput } from '../validators/user.validators.js';
 
@@ -17,7 +23,7 @@ export async function updateUser(user: User, input: UpdateUserInput): Promise<Us
   }
   if (input.username) user.username = input.username;
   if (input.password) {
-    user.passwordHash = await bcrypt.hash( input.password, env.bcryptRounds );
+    user.passwordHash = await bcrypt.hash(input.password, env.bcryptRounds);
   }
   return user.save();
 }
@@ -46,4 +52,38 @@ export async function unblockUser(blockerId: string, blockedId: string): Promise
   if (!block) throw new ApiError(404, 'Block not found', 'NOT_FOUND');
 
   await block.destroy();
+}
+
+export async function getUserProfile(targetUserId: string, requestingUserId: string) {
+  const targetUser = await UserModel.findOne({ where: { id: targetUserId, deletedAt: null } });
+  if (!targetUser) throw new ApiError(404, 'User not found', 'NOT_FOUND');
+
+  const posts = await PostModel.findAll({
+    where: { userId: targetUserId, deletedAt: null },
+    order: [['createdAt', 'DESC']],
+  });
+
+  const reposts = await RepostModel.findAll({
+    where: { userId: targetUserId },
+    include: [
+      {
+        model: PostModel,
+        as: 'post',
+        where: { deletedAt: null },
+        include: [{ model: UserModel, as: 'user' }],
+      },
+    ],
+    order: [['createdAt', 'DESC']],
+  });
+
+  const isFollowing = await FollowModel.findOne({
+    where: { followerId: requestingUserId, followingId: targetUserId },
+  });
+
+  return {
+    user: targetUser.toPublicJSON(),
+    posts,
+    reposts,
+    isFollowing: Boolean(isFollowing),
+  };
 }
